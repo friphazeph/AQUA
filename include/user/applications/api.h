@@ -45,7 +45,7 @@
 	#include "../../graphics/GFX_loader_files/fonts/font_aqua_50px.h"
 	#include "../../graphics/GFX_loader_files/fonts/font_aqua_20px.h"*/
 	
-	typedef struct {
+	/*typedef struct {
 		string name;
 		uint16 version;
 		string description;
@@ -58,7 +58,7 @@
 		char* commands;
 		uint32 commands_len;
 		
-	} application;
+	} application;*/
 	
 	void api_rescorces_init(\
 		uint8* _api_icon_off, \
