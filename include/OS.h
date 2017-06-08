@@ -2,12 +2,9 @@
 #ifndef OS_H
 	#define OS_H
 	
-	#include "minecraft/main.h" /// this is minecraft 
-	
 	#include "types.h"
 	#include "multiboot.h"
 	
-	#include "dawn/dawn.h"
 	#include "universal/lang.h"
 	
 	#include "utils/math.h"
@@ -35,8 +32,6 @@
 	#include "specs/settings.h"
 	#include "specs/RAM_count.h"
 	
-	#include "file_system/ATA.h"
-	#include "file_system/ext2.h"
 	#include "file_system/AQUA_fs.h"
 	
 	#include "user/cursor_task.h"
