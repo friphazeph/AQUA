@@ -32,7 +32,7 @@
 	#include "../../universal/lang.h"
 	
 	#include "../cursor_task.h"
-	#include "../libs/lib_2d.h"
+	//#include "../libs/lib_2d.h"
 	
 	#include "../../graphics/UI.h"
 	#include "../../graphics/GFX.h"
