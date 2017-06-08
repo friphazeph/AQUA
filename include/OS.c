@@ -460,8 +460,6 @@ void OS_run(\
 		\
 	);
 	
-	//launch_minecraft(); /// launch minecraft AQUA edition
-	
 	println("ATA: Setting up Advanced Technoligy Attachment at 0x1F0 ...", 0x0f);
 	ata_setup(TRUE, 0x1F0);
 	
