@@ -64,7 +64,6 @@ OBJS = obj/kernel_asm.o \
 	\
 	obj/memory/heap.o \
 	obj/memory/memory.o \
-	obj/memory/paging.o \
 	\
 	obj/graphics/UI.o \
 	obj/graphics/GFX.o \
