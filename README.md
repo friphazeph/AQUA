@@ -6,12 +6,16 @@ To run, it's easy. Just do:
 
 `cd AQUA`
 
+`make iso`
+
 `VBoxManage createvm --name "AQUA OS" --register`
 
 `VBoxManage modifyvm "AQUA OS" --memory 512`
 
 `VBoxManage createhd --filename "AQUA Harddrive" --size 2048`
 
-`VBoxManage storageattach "AQUA OS" --storagectl "IDE" --port 0 --device 1 --medium "AQUA Harddrive.vdi" --type hdd`
+`VBoxManage storagectl "AQUA OS" --add ide --name "IDE"`
 
-`make iso`
+`VBoxManage storageattach "AQUA OS" --storagectl "IDE" --port 0 --device 0 --medium aqua/aqua.iso --type dvddrive`
+
+`VBoxManage storageattach "AQUA OS" --storagectl "IDE" --port 0 --device 1 --medium "AQUA Harddrive.vdi" --type hdd`
