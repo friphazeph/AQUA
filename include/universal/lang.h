@@ -27,6 +27,7 @@
 	
 	#include "../types.h"
 	#include "../utils/string.h"
+	#include "key_map.h"
 	
 	void set_lang(string lang);
 	string get_lang(void);

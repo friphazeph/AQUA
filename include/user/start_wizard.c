@@ -89,8 +89,6 @@ static string set_page(int page, string animation, boolean next) {
 		mp = poll_mouse_press();
 		mr = poll_mouse_release();
 		
-		strcpy(result, "fr-be"); b = TRUE; // temporaty
-		
 		if (!next && mr == 1 && page == 0) {
 			if (my > 40 && my < 80) {
 				if (mx > width / 3 - 30 && mx < width / 3 + 30) { strcpy(result, "en-uk"); b = TRUE; }

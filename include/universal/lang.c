@@ -29,6 +29,11 @@ static string LANG = "en-uk";//"en-uk" for english
 void set_lang(string lang) {
 	LANG = lang;
 	
+	if (str_eql(lang, "fr-be")) set_layout("azerty");
+	else if (str_eql(lang, "hu")) set_layout("qwertz");
+	else if (str_eql(lang, "ge")) set_layout("qwertz");
+	else set_layout("qwerty");
+	
 }
 
 string get_lang(void) {

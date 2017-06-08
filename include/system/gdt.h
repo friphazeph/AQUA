@@ -45,6 +45,14 @@
 		
 	} __attribute__((packed)) GDT_pointer;
 	
+	struct GDT_entry_bits {
+		uint32 limit_low : 16;
+		uint32 base_low : 24;
+		uint32 accessed : 1;
+		uint32 
+		
+	};
+	
 	void gdt_set_gate(uint32 num, uint16 limit, uint32 base, uint8 access, uint8 granularity);
 	void load_gdt(void);
 	
