@@ -6,6 +6,12 @@ To run, it's easy. Just do:
 
 `cd AQUA`
 
-`make iso`
+`VBoxManage createvm --name "AQUA OS" --register`
 
-You need a virtual machine in Virtual Box called "AQUA OS" for this to work, with a recommended amount of 512mb of ram, a disk drive, and 9mb of video ram.
+`VBoxManage modifyvm "AQUA OS" --memory 512`
+
+`VBoxManage createhd --filename "AQUA Harddrive" --size 2048`
+
+`VBoxManage storageattach "AQUA OS" --storagectl "IDE" --port 0 --device 1 --medium "AQUA Harddrive.vdi" --type hdd`
+
+`make iso`
