@@ -39,12 +39,12 @@ static uint8 boot_disk;
 
 static char dir_buffer1[512];
 static char dir_buffer2[512];
-
+/*
 static FILE current_dir = {};
 static FILE file_buffer = {};
 
 static filesystem temp_fs = {};
-static filesystem* _filesystem;
+static filesystem* _filesystem;*/
 static uint8 prog[0x1000];
 
 static boolean drive = TRUE;
@@ -57,13 +57,13 @@ static uint8* _wallpaper0;
 static uint8* _wallpaper2;
 static uint8* _wallpaper5;
 static uint8* _wallpaper7;
-
+/*
 static void progx(void) {
 	exec(prog);
 	
 }
 
-/*static boolean find_and_execute(char* cmd, boolean wait) {
+static boolean find_and_execute(char* cmd, boolean wait) {
 	FILE* file = kmalloc(sizeof(FILE));
 	
 	if (_file_system->get_file(cmd, file, _file_system) && !file->is_directory()) {
@@ -85,7 +85,7 @@ static void progx(void) {
 	
 	return FALSE;
 	
-}*/
+}
 
 static void init_ext2_buffers(filesystem* __filesystem) {
 	_filesystem = __filesystem;
@@ -94,7 +94,7 @@ static void init_ext2_buffers(filesystem* __filesystem) {
 	dir_buffer1[0] = '/';
 	dir_buffer2[0] = '\0';
 	
-}
+}*/
 
 static void get_minute_update(uint16 fdl, uint8 font_data[94][fdl]) {
 	uint32 new_minute = CMOS_get_time('m');
@@ -459,6 +459,8 @@ void OS_run(\
 		font_aqua_20px \
 		\
 	);
+	
+	//launch_minecraft(); /// launch minecraft AQUA edition
 	
 	println("ATA: Setting up Advanced Technoligy Attachment at 0x1F0 ...", 0x0f);
 	ata_setup(TRUE, 0x1F0);
