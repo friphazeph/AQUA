@@ -60,7 +60,6 @@ OBJS = obj/kernel_asm.o \
 	obj/user/start_wizard.o \
 	obj/user/app_launcher.o \
 	\
-	obj/user/compilers/c_compiler.o \
 	obj/user/interpreters/basic_interpreter.o \
 	\
 	obj/memory/heap.o \
