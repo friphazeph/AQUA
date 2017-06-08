@@ -23,8 +23,8 @@
 
 #include "api.h"
 
-static icon default_icon;
-static colour default_colour;
+//static icon default_icon;
+//static colour default_colour;
 
 static uint8* api_icon_off;
 static uint8* api_icon_back;
