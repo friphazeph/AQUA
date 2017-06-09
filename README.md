@@ -6,4 +6,4 @@ To run, it's easy. Just copy this huge line, and AQUA will automatically install
 
 And if you want to update AQUA, then paste this command:
 
-`git clone https://github.com/obiwac/AQUA/;cd AQUA;VBoxManage createhd --filename "AQUA Harddrive" --size 2048;make iso`
+`rm -rf AQUA;git clone https://github.com/obiwac/AQUA/;cd AQUA;VBoxManage createhd --filename "AQUA Harddrive" --size 2048;make iso`
