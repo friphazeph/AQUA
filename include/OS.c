@@ -497,8 +497,8 @@ void OS_run(\
 		warning = GFX_blit_text_hex_to_ptr8(warning, WIDTH, 10, 90, 0, font_aqua_20px_l, font_aqua_20px, translate("You do not have enough RAM."), 0x00FF0000);
 		
 		temp = translate("You have");
-		/*str_append(temp, " ");
-		str_append(temp, /*itoa(get_total_RAM() / 1048576)*/"61");
+		//str_append(temp, " ");
+		//str_append(temp, /*itoa(get_total_RAM() / 1048576)*/"61");
 		//str_append(temp, " ");
 		//str_append(temp, translate("mebibytes of RAM."));
 		
