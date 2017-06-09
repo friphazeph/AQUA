@@ -28,10 +28,9 @@ static string DISK_SIGNATURE = "AQUA OS 1.5 file system signature. DO NOT ATTEMP
 
 static boolean FS_str_eql(string a, string b) {
 	boolean result = TRUE;
-	int _size = str_len(b);
 	
 	int i;
-	for (i = 0; i <= _size; i++) {
+	for (i = 0; i <= str_len(b); i++) {
 		if (a[i] != b[i]) {
 			result = FALSE;
 			

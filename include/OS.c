@@ -460,10 +460,8 @@ void OS_run(\
 		\
 	);
 	
-	//launch_minecraft(); /// launch minecraft AQUA edition
-	
 	println("ATA: Setting up Advanced Technoligy Attachment at 0x1F0 ...", 0x0f);
-	ata_setup(TRUE, 0x1F0);
+	ata_setup(FALSE, 0x1F0);
 	
 	println("ATA: Identifying ...", 0x0f);
 	//identify();
@@ -483,13 +481,13 @@ void OS_run(\
 		println("\tFS WARNING: File system is not correctly formatted. Locking drive ...", 0x06);
 		
 		enter_start_wizard();
-		//launch_application("Settings");
+		launch_application("Settings");
 		
 	}
 	
 	load_settings();
 	
-	if (get_total_RAM() / 1048576 < 512 && (lock_drive || get_setting(0) == 'f')) {
+	if (get_total_RAM() / 1048576 < 512 && get_setting(0) == 'f') {
 		println("WARNING, you do not have enough RAM.", 0x06);
 		
 		warning = (uint8*) kmalloc(WIDTH * HEIGHT * 3);
@@ -499,10 +497,10 @@ void OS_run(\
 		warning = GFX_blit_text_hex_to_ptr8(warning, WIDTH, 10, 90, 0, font_aqua_20px_l, font_aqua_20px, translate("You do not have enough RAM."), 0x00FF0000);
 		
 		temp = translate("You have");
-		str_append(temp, " ");
+		/*str_append(temp, " ");
 		str_append(temp, /*itoa(get_total_RAM() / 1048576)*/"61");
 		//str_append(temp, " ");
-		str_append(temp, translate("mebibytes of RAM."));
+		//str_append(temp, translate("mebibytes of RAM."));
 		
 		warning = GFX_blit_text_hex_to_ptr8(warning, WIDTH, 10, 120, 0, font_aqua_20px_l, font_aqua_20px, temp, 0x00FFFFFF);
 		warning = GFX_blit_text_hex_to_ptr8(warning, WIDTH, 10, 150, 0, font_aqua_20px_l, font_aqua_20px, translate("Recommended amount is 512 mebibytes of RAM."), 0x00FFFFFF);
