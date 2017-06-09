@@ -6,6 +6,7 @@
 	#include "multiboot.h"
 	
 	#include "universal/lang.h"
+	#include "dawn/dawn.h"
 	
 	#include "utils/math.h"
 	#include "utils/time.h"

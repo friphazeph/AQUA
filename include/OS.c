@@ -314,7 +314,7 @@ void OS_run(\
 	GFX_init(WIDTH, HEIGHT, BPP, mbi->framebuffer_addr, buffer_blit);
 	UI_init(font_aqua_20px_l, font_aqua_20px);
 	
-	//dawn_boot();
+	dawn_boot();
 	
 	int b;
 	for (b = 0; b < 255; b += 30) {

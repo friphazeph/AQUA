@@ -35,6 +35,7 @@ EMULATOR_FLAGS = -kernel
 
 OBJS = obj/kernel_asm.o \
 	obj/kernel_c.o \
+	obj/dawn/dawn.o \
 	\
 	obj/OS.o \
 	obj/screen.o \
