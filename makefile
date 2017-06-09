@@ -33,7 +33,8 @@ LDFLAGS = -m elf_i386 -T src/link.ld
 EMULATOR = qemu-system-i386
 EMULATOR_FLAGS = -kernel
 
-OBJS = obj/kernel_asm.o \
+OBJS = \
+	obj/kernel_asm.o \
 	obj/kernel_c.o \
 	obj/dawn/dawn.o \
 	\
@@ -131,6 +132,7 @@ kernel.bin: src/link.ld $(OBJS)
 	ld -melf_i386 -T $< -o $@ $(OBJS)
 
 obj/kernel_asm.o: src/kernel.asm
+	find ./include/ -type d | sed 's/\.\/include//g' | xargs -I {} mkdir -p obj"/{}"
 	$(ASSEMBLER) $(ASMFLAGS) -o obj/kernel_asm.o src/kernel.asm
 
 obj/kernel_c.o: src/kernel.c
