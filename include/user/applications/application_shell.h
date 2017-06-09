@@ -25,6 +25,7 @@
 	#define APPLICATION_SHELL
 	
 	#include "api.h"
+	#include "../cursor_task.h"
 	#include "../../specs/settings.h"
 	
 	void launch_application_draw(void);

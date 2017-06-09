@@ -65,6 +65,7 @@ void update_entries(uint8* buffer_overlay, uint8* buffer) {
 	
 	buffer_overlay = add_entry(get_setting(0), _api_icon_next, _api_font_aqua_20px, buffer_overlay, "Disable warnings", 0x00FFFFFF);
 	buffer_overlay = add_entry(get_setting(1), _api_icon_next, _api_font_aqua_20px, buffer_overlay, "Fast transitions", 0x00FFFFFF);
+	buffer_overlay = add_entry(get_setting(2), _api_icon_next, _api_font_aqua_20px, buffer_overlay, "Inverted cursor", 0x00FFFFFF);
 	
 	hide_cursor();
 	UI_animate_desktop("fade", 30, buffer_overlay);
@@ -202,6 +203,12 @@ void launch_application_shell(void) {
 					
 					update_entries(buffer_overlay, buffer);
 					
+				} else if (my == 5) {
+					if (get_setting(2) == 'f') set_setting(2, 't');
+					else if (get_setting(2) == 't') set_setting(2, 'f');
+					
+					update_entries(buffer_overlay, buffer);
+					
 				}
 				
 			}
@@ -216,5 +223,7 @@ void launch_application_shell(void) {
 	kfree(buffer, buffer_size);
 	kfree(buffer_overlay, buffer_size);
 	kfree(buffer_trace, buffer_size);
+	
+	load_settings();
 	
 }

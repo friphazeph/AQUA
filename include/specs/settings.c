@@ -27,6 +27,7 @@ static char* settings;
 
 void load_settings(void) {
 	strcpy(settings, read28(SETTINGS_SECTOR, SETTINGS));
+	invert_cursor(settings[2]);
 	
 }
 
@@ -40,10 +41,12 @@ void save_settings(void) {
 void settings_reset(void) {
 	set_setting(0, 'f');
 	set_setting(1, 'f');
+	set_setting(2, 'f');
 	
 }
 
 void set_setting(int id, char value) {
+	if (id == 2) invert_cursor(value);
 	settings[id] = value;
 	
 }

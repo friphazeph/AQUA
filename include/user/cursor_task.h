@@ -31,6 +31,7 @@
 	
 	#define CURSOR_SIZE 16
 	
+	void invert_cursor(char value);
 	void init_cursor(boolean _buffer_blit);
 	void blit_cursor(void);
 	void update_mouse_cursor(void);

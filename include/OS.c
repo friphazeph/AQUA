@@ -314,7 +314,7 @@ void OS_run(\
 	GFX_init(WIDTH, HEIGHT, BPP, mbi->framebuffer_addr, buffer_blit);
 	UI_init(font_aqua_20px_l, font_aqua_20px);
 	
-	dawn_boot();
+	//dawn_boot();
 	
 	int b;
 	for (b = 0; b < 255; b += 30) {
@@ -471,25 +471,23 @@ void OS_run(\
 	println("FS: Initializing ...", 0x0f);
 	//FS_reformat();
 	
-	//FS_new_file("Geez", "My name is jeff.");
-	/*string tete = read28(20 + ALLOCATION_INDEX_END, 512);//FS_read_file(FS_find_file("Geez"));
-	tete[5] = 0;
-	GFX_blit_text_hex(0, 0, 0, 439, font_aqua_20px, tete, 0x00FF00FF);*/
+	//FS_new_file("Pepe", "My name is jeff.");
+	/*string pepe = read28(20 + ALLOCATION_INDEX_END, 512);//FS_read_file(FS_find_file("Pepe"));
+	pepe[5] = 0;
+	GFX_blit_text_hex(0, 0, 0, 439, font_aqua_20px, pepe, 0x00FF00FF);*/
 	//sleep(50);
 	
 	lock_drive = init_fs();
-	
-	load_settings();
 	
 	if (lock_drive) {
 		println("\tFS WARNING: File system is not correctly formatted. Locking drive ...", 0x06);
 		
 		enter_start_wizard();
-		launch_application("Settings");
-		
-		load_settings();
+		//launch_application("Settings");
 		
 	}
+	
+	load_settings();
 	
 	if (get_total_RAM() / 1048576 < 512 && (lock_drive || get_setting(0) == 'f')) {
 		println("WARNING, you do not have enough RAM.", 0x06);

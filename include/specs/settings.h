@@ -27,8 +27,9 @@
 	#include "../types.h"
 	#include "../utils/string.h"
 	#include "../drivers/ATA_driver.h"
+	#include "../user/cursor_task.h"
 	
-	#define SETTINGS 2
+	#define SETTINGS 3
 	#define SETTINGS_SECTOR 3
 	
 	void load_settings(void);

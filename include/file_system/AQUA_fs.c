@@ -107,7 +107,7 @@ void FS_reformat(void) {
 	flush();
 	write28(2, get_lang(), 512);
 	flush();
-	write28(3, "ff", 512);
+	write28(3, "fff", 512);
 	flush();
 	write28(4, "Jeff", 512);
 	flush();
