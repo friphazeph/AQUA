@@ -89,14 +89,14 @@ static string set_page(int page, string animation, boolean next) {
 		mp = poll_mouse_press();
 		mr = poll_mouse_release();
 		
-		if (!next && mr == 1 && page == 0) {
+		if (mr == 1 && page == 0) {
 			if (my > 40 && my < 80) {
-				if (mx > width / 3 - 30 && mx < width / 3 + 30) { strcpy(result, "en-uk"); b = TRUE; }
-				else if (mx > width / 1.5 - 30 && mx < width / 1.5 + 30) { strcpy(result, "fr-be"); b = TRUE; }
+				if (mx > width / 3 - 30 && mx < width / 3 + 30) { strcpy(result, "en-uk"); b = TRUE && !next; }
+				else if (mx > width / 1.5 - 30 && mx < width / 1.5 + 30) { strcpy(result, "fr-be"); b = TRUE && !next; }
 				
 			} else if (my > 90 && my < 130) {
-				if (mx > width / 3 - 30 && mx < width / 3 + 30) { strcpy(result, "hu"); b = TRUE; }
-				else if (mx > width / 1.5 - 30 && mx < width / 1.5 + 30) { strcpy(result, "ge"); b = TRUE; }
+				if (mx > width / 3 - 30 && mx < width / 3 + 30) { strcpy(result, "hu"); b = TRUE && !next; }
+				else if (mx > width / 1.5 - 30 && mx < width / 1.5 + 30) { strcpy(result, "ge"); b = TRUE && !next; }
 				
 			}
 			

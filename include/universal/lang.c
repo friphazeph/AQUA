@@ -253,7 +253,7 @@ string translate(string text) {
 		return text;
 		
 	} else {
-		return "ERROR";
+		return text;
 	
 	}
 	

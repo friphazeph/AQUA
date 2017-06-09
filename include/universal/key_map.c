@@ -32,7 +32,7 @@ static char azerty_map[] = "@@&|\"'($\\!<>)-\b\tazertyuiop^$\n`qsdfghjklm%`#<wxc
 static char shift_azerty_map[] = "##1234567890'_\b\tAZERTYUIOP:*\n`QSDFGHJKLM%`#>WXCVBN?./+";
 
 void set_layout(string _layout) {
-	strcpy(layout, _layout);
+	layout = _layout;
 	
 }
 
