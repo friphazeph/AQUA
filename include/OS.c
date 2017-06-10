@@ -659,6 +659,17 @@ void OS_run(\
 	entries_list[3].entries[1].name = "My script";
 	entries_list[3].entries[1].colour = 0x00FFFFFF;
 	
+	string stupid_messages[] = {
+		"My name is Jeff",
+		"I am AQUA",
+		"This is Sparta",
+		"John cena",
+		"Chuck Norris ***chuckle***",
+		"ZZzzzzzZZzZZZZ",
+		"Introducing, fry",
+		
+	};
+	
 	string time_string;
 	string week_day;
 	string day_string = "IF YOU SEE THIS MESSAGE THEN WTF";
@@ -761,6 +772,10 @@ void OS_run(\
 			command = UI_entry(font_aqua_20px_l, font_aqua_20px, translate("Run dialog. Enter a command:"), icon_next, 0x00FFFF00);
 			
 			if (strcmp(command, "shutdown") == 0) UI_turn_off();
+			else if (strcmp(command, "sleep") == 0) {
+				UI_sleep(stupid_messages[rand_int(0, 6)], font_aqua_50px_l, font_aqua_50px);
+				
+			}
 			else if (strcmp(command, "crash") == 0) asm("int $18");
 			else launch_application(command);
 			

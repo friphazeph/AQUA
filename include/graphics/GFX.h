@@ -45,6 +45,8 @@
 	void GFX_flip_buffer(uint8* buffer);
 	uint32 GFX_get_mode_info(char info_byte);
 	
+	void GFX_set_filter(char r, char g, char b);
+	
 	void GFX_put_pixel_hex(uint32 x, uint32 y, uint32 colour);
 	void GFX_put_pixel_rgb(uint32 x, uint32 y, uint8 r, uint8 g, uint8 b);
 	

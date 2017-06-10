@@ -85,6 +85,42 @@ uint8* UI_get_component_entry_ptr8(UI_component_entry entry, uint8* buffer) {
 	
 }*/
 
+void UI_sleep(string message, uint16 _fdl, uint8 _font_data[94][_fdl]) {
+	uint8* old_buffer = (uint8*) kmalloc(width * height * 3);
+	uint8* buffer = (uint8*) kmalloc(width * height * 3);
+	
+	old_buffer = GFX_compile_section_to_ptr8(old_buffer, 0, 0, width, height);
+	buffer = GFX_fill_rect_hex_to_ptr8(buffer, width, 0, 0, width, height, 0x00000000);
+	buffer = GFX_blit_text_hex_to_ptr8(buffer, width, 20, 20, 0, fdl, _font_data, message, 0x00292929);
+	
+	hide_cursor();
+	UI_animate_desktop("slide_up", 1, buffer);
+	
+	update_mouse_cursor();
+	int original_x = get_mouse_x();
+	int original_y = get_mouse_y();
+	
+	boolean sleeping = TRUE;
+	while (sleeping) {
+		//sleep(1);
+		update_mouse_cursor();
+		
+		if (original_x != get_mouse_x() && original_y != get_mouse_y()) {
+			sleeping = FALSE;
+			break;
+			
+		}
+		
+	}
+	
+	UI_animate_desktop("slide_up", 1, old_buffer);
+	show_cursor();
+	
+	kfree(old_buffer, width * height * 3);
+	kfree(buffer, width * height * 3);
+	
+}
+
 void UI_turn_off(void) {
 	uint8* double_buffer_trace = (uint8*) kmalloc(width * height * 3);
 	double_buffer_trace = GFX_compile_section_to_ptr8(double_buffer_trace, 0, 0, width, height);
@@ -348,6 +384,18 @@ void UI_animate_desktop(string type, uint16 time, uint8* image_data) {
 		for (f = 0; f < 70 * time; f++) {
 			s += (s / 10.0f) + 0.2f;
 			GFX_blit_image(0, height - (uint) ((float) height - ((float) height / (s + 1.0f))), width, height, image_data);
+			
+		}
+		
+		GFX_blit_image(0, 0, width, height, image_data);
+		
+	} else if (str_eql(type, "slide_down")) {
+		float s = 0;
+		
+		uint f;
+		for (f = 0; f < 70 * time; f++) {
+			s += (s / 10.0f) + 0.2f;
+			GFX_blit_image(0, (uint) ((float) height - ((float) height / (s + 1.0f))) - height, width, height, image_data);
 			
 		}
 		
