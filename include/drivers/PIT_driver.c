@@ -24,33 +24,40 @@
 
 #include "PIT_driver.h"
 
-int timer_ticks = 0;
-boolean second_passed = FALSE;
-boolean buffer_blit = TRUE;
+static int timer_ticks;
+
+static boolean buffer_blit = TRUE;
+static boolean dragging_top;
+
+static int32 mx;
+static int32 my;
+static uint8 mp;
+static uint8 mr;
+
+static uint32 width;
+static uint32 height;
 
 void timer_handler(struct registers* r) {
 	timer_ticks++;
 	
-	if (timer_ticks % 18 == 0) {
-		second_passed = TRUE;
+	mx = get_mouse_x();
+	my = get_mouse_y();
+	
+	mp = untouch_mouse_press();
+	mr = untouch_mouse_release();
+	
+	clear_untouch();
+	
+	if (my <= 0 && mp == 1) dragging_top = TRUE;
+	if (dragging_top && my > height / 2 && mr == 1) {
+		enter_sleep_mode();
+		dragging_top = FALSE;
 		
 	}
 	
 	if (buffer_blit) {
 		GFX_update_framebuffer();
 		update_mouse_cursor();
-		
-	}
-	
-}
-
-boolean get_second_passed(void) {
-	if (second_passed) {
-		second_passed = FALSE;
-		return TRUE;
-	
-	} else {
-		return FALSE;
 		
 	}
 	
@@ -75,7 +82,11 @@ void timer_disable(void) {
 }
 
 void timer_install(boolean _buffer_blit) {
+	width = GFX_get_mode_info('w');
+	height = GFX_get_mode_info('h');
+	
 	buffer_blit = _buffer_blit;
+	dragging_top = FALSE;
 	
 	timer_ticks = 0;
 	irq_add_handler(0, timer_handler);

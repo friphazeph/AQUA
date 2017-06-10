@@ -57,6 +57,7 @@ OBJS = \
 	obj/specs/settings.o \
 	obj/specs/RAM_count.o \
 	\
+	obj/user/sleep.o \
 	obj/user/cursor_task.o \
 	obj/user/widget_page.o \
 	obj/user/start_wizard.o \
@@ -66,6 +67,7 @@ OBJS = \
 	\
 	obj/memory/heap.o \
 	obj/memory/memory.o \
+	obj/memory/paging.o \
 	\
 	obj/graphics/UI.o \
 	obj/graphics/GFX.o \

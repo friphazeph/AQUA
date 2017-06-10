@@ -75,7 +75,6 @@
 	UI_component_entry UI_update_component_entry(UI_component_entry entry);
 	uint8* UI_get_component_entry_ptr8(UI_component_entry entry, uint8* buffer);
 	*/
-	void UI_sleep(string message, uint16 _fdl, uint8 _font_data[94][_fdl]);
 	void UI_turn_off(void);
 	boolean UI_dialog(uint16 _fdl, uint8 _font_data[94][_fdl], string text, uint8 icon_data0[], uint32 icon_colour0, string command0, uint8 icon_data1[], uint32 icon_colour1, string command1);
 	

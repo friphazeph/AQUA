@@ -350,7 +350,7 @@ void OS_run(\
 		timer_install(buffer_blit);
 		
 		if (buffer_blit) timer_phase(100000000);
-		else timer_phase(1);
+		else timer_phase(15);
 		
 	}
 	
@@ -459,6 +459,10 @@ void OS_run(\
 		font_aqua_20px \
 		\
 	);
+	
+	println("Passing necessary rescorces to all the other small desktops ...", 0x0f);
+	init_sleep(font_aqua_50px_l, font_aqua_50px);
+	//init_slide(font_aqua_20px_l, font_aqua_20px, font_aqua_50px_l, font_aqua_50px);
 	
 	println("ATA: Setting up Advanced Technoligy Attachment at 0x1F0 ...", 0x0f);
 	ata_setup(FALSE, 0x1F0);
@@ -659,17 +663,6 @@ void OS_run(\
 	entries_list[3].entries[1].name = "My script";
 	entries_list[3].entries[1].colour = 0x00FFFFFF;
 	
-	string stupid_messages[] = {
-		"My name is Jeff",
-		"I am AQUA",
-		"This is Sparta",
-		"John cena",
-		"Chuck Norris ***chuckle***",
-		"ZZzzzzzZZzZZZZ",
-		"Introducing, fry",
-		
-	};
-	
 	string time_string;
 	string week_day;
 	string day_string = "IF YOU SEE THIS MESSAGE THEN WTF";
@@ -772,10 +765,7 @@ void OS_run(\
 			command = UI_entry(font_aqua_20px_l, font_aqua_20px, translate("Run dialog. Enter a command:"), icon_next, 0x00FFFF00);
 			
 			if (strcmp(command, "shutdown") == 0) UI_turn_off();
-			else if (strcmp(command, "sleep") == 0) {
-				UI_sleep(stupid_messages[rand_int(0, 6)], font_aqua_50px_l, font_aqua_50px);
-				
-			}
+			else if (strcmp(command, "sleep") == 0) enter_sleep_mode();
 			else if (strcmp(command, "crash") == 0) asm("int $18");
 			else launch_application(command);
 			

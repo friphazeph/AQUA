@@ -63,7 +63,7 @@
 	void GFX_wash_hex_wa(uint32 colour, uint8 a);
 	void GFX_wash_rgb(uint8 r, uint8 g, uint8 b);
 	
-	void GFX_blit_image(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[]);
+	void GFX_blit_image(uint32 x, int y, uint32 w, uint32 h, uint8 image_data[]);
 	void GFX_blit_image_part(uint32 x, uint32 y, uint32 part_x, uint32 part_y, uint32 part_w, uint32 part_h, uint32 w, uint32 h, uint8 image_data[]);
 	void GFX_blit_image_wa(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[], uint8 a);
 	void GFX_blit_32bit_image(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[]);

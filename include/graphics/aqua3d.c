@@ -336,12 +336,12 @@ void gl_render_alpha(void) {
 	//gl_point_t* new_points = points;
 	
 	int p;
-	for (p = 0; p < point_count; p++) {
+	/*for (p = 0; p < point_count; p++) {
 		points[p].distance = gl_get_distance(points[p].pos, camera.pos);
 		
 	}
 	
-	bubble_sort(point_count, points);
+	bubble_sort(point_count, points);*/
 	
 	/*if (depth_test) {
 		for (p = 0; p < point_count; p++) {
@@ -363,7 +363,7 @@ void gl_render_alpha(void) {
 			v.y -= camera.pos.y;
 			v.z -= camera.pos.z;
 			
-			_2d.x = v.x;
+			/*_2d.x = v.x;
 			_2d.y = v.z;
 			r = gl_rotate_2d(_2d, camera.rot.y);
 			
@@ -375,7 +375,7 @@ void gl_render_alpha(void) {
 			r = gl_rotate_2d(_2d, camera.rot.x);
 			
 			v.y = r.x;
-			v.z = r.y;
+			v.z = r.y;*/
 			
 			f = camera.fov / v.z;
 			

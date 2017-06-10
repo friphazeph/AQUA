@@ -33,6 +33,9 @@ static int32 mouse_y = 0;
 static uint8 press = 127;
 static uint8 release = 127;
 
+static uint8 utpress = 127;
+static uint8 utrelease = 127;
+
 static int32 max_width = 800;
 static int32 max_height = 600;
 
@@ -49,11 +52,13 @@ void mouse_move(int8 x, int8 y) {
 
 void mouse_press(uint8 button) {
 	press = button;
+	utpress = press;
 	
 }
 
 void mouse_release(uint8 button) {
 	release = button;
+	utrelease = release;
 	
 }
 
@@ -120,6 +125,15 @@ int32 get_mouse_x(void) {
 
 int32 get_mouse_y(void) {
 	return mouse_y;
+	
+}
+
+uint8 untouch_mouse_press(void) { return utpress; }
+uint8 untouch_mouse_release(void) { return utrelease; }
+
+void clear_untouch(void) {
+	utpress = 127;
+	utrelease = 127;
 	
 }
 

@@ -30,10 +30,10 @@
 	#include "../interrupts/irq.h"
 	#include "../graphics/GFX.h"
 	
+	#include "../user/sleep.h"
 	#include "../user/cursor_task.h"
 	
 	void timer_handler(struct registers* r);
-	boolean get_second_passed(void);
 	void reset_timer(void);
 	
 	void timer_phase(int hertz);

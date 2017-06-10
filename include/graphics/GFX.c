@@ -35,10 +35,6 @@ static uint32 height;
 static uint8 bpp;
 static uint8 cpc;
 
-static char filter_r = 1;
-static char filter_g = 1;
-static char filter_b = 1;
-
 void GFX_init(uint32 _width, uint32 _height, uint32 _bpp, uint64 _framebuffer_addr, boolean _buffer_blit) {
 	cpc = _bpp / 8;
 	mode_pitch = cpc * _width;
@@ -101,52 +97,21 @@ uint32 GFX_get_mode_info(char info_byte) {
 	
 }
 
-void GFX_set_filter(char r, char g, char b) {
-	filter_r = r;
-	filter_g = g;
-	filter_b = b;
-	
-}
-
-static uint8 GFX_div(channel, filter) {
-	if (filter == 1) return channel;
-	return channel - filter;
-	
-}
-
-static uint8 GFX_filter(char id, uint8 channel) {
-	/*if (id == 'r') return GFX_div(channel, filter_r);
-	if (id == 'g') return GFX_div(channel, filter_g);
-	if (id == 'b') return GFX_div(channel, filter_b);
-	*/
-	return channel;
-	
-}
-
-static uint8 GFX_unfilter(char id, uint8 channel) {
-	/*if (id == 'r') return channel * filter_r;
-	if (id == 'g') return channel * filter_g;
-	if (id == 'b') return channel * filter_b;
-	*/
-	return channel;
-	
-}
-
 void GFX_put_pixel_hex(uint32 x, uint32 y, uint32 colour) {
 	uint32 where = x * cpc + y * mode_pitch;
 	
-	video_RAM[where] = GFX_filter('r', colour & 255);
-	video_RAM[where + 1] = GFX_filter('g', (colour >> 8) & 255);
-	video_RAM[where + 2] = GFX_filter('b', (colour >> 16) & 255);
+	video_RAM[where] = colour & 255;
+	video_RAM[where + 1] = (colour >> 8) & 255;
+	video_RAM[where + 2] = (colour >> 16) & 255;
 	
 }
 
 void GFX_put_pixel_rgb(uint32 x, uint32 y, uint8 r, uint8 g, uint8 b) {
 	uint32 where = x * cpc + y * mode_pitch;
 	
-	video_RAM[where] = GFX_filter('r', r);
-	video_RAM[where + 1] = GFX_filter('g', g);
-	video_RAM[where + 2] = GFX_filter('b', b);
+	video_RAM[where] = r;
+	video_RAM[where + 1] = g;
+	video_RAM[where + 2] = b;
 	
 }
 
@@ -154,9 +119,9 @@ uint32 GFX_get_pixel_hex(uint32 x, uint32 y) {
 	uint32 where = (width - x) * cpc + (height - y) * mode_pitch;
 	uint32 result = 0x00000000;
 	
-	result += GFX_unfilter('r', video_RAM[where]);
-	result += GFX_unfilter('g', video_RAM[where + 1] << 8);
-	result += GFX_unfilter('b', video_RAM[where + 2] << 16);
+	result += video_RAM[where];
+	result += video_RAM[where + 1] << 8;
+	result += video_RAM[where + 2] << 16;
 	
 	return result;
 	
@@ -165,9 +130,9 @@ uint32 GFX_get_pixel_hex(uint32 x, uint32 y) {
 uint8 GFX_get_pixel_component(uint32 x, uint32 y, char c) {
 	uint32 where = x * cpc + y * mode_pitch;
 	
-	if (c == 'r') return GFX_unfilter('r', video_RAM[where]);
-	else if (c == 'g') return GFX_unfilter('g', video_RAM[where + 1]);
-	else if (c == 'b') return GFX_unfilter('b', video_RAM[where + 2]);
+	if (c == 'r') return video_RAM[where];
+	else if (c == 'g') return video_RAM[where + 1];
+	else if (c == 'b') return video_RAM[where + 2];
 	else return 0;
 	
 }
@@ -232,9 +197,9 @@ void GFX_fill_rect_hex(uint32 x, uint32 y, uint32 w, uint32 h, uint32 colour) {
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			where[_y * cpc] = GFX_filter('r', colour & 255);
-			where[_y * cpc + 1] = GFX_filter('g', (colour >> 8) & 255);
-			where[_y * cpc + 2] = GFX_filter('b', (colour >> 16) & 255);
+			where[_y * cpc] = colour & 255;
+			where[_y * cpc + 1] = (colour >> 8) & 255;
+			where[_y * cpc + 2] = (colour >> 16) & 255;
 			
 		}
 		
@@ -262,9 +227,9 @@ void GFX_fill_rect_hex_wa(uint32 x, uint32 y, uint32 w, uint32 h, uint32 colour,
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			_r = mc * r + (1.0f - mc) * GFX_unfilter('r', where[_y * cpc]);
-			_g = mc * g + (1.0f - mc) * GFX_unfilter('g', where[_y * cpc + 1]);
-			_b = mc * b + (1.0f - mc) * GFX_unfilter('b', where[_y * cpc + 2]);
+			_r = mc * r + (1.0f - mc) * where[_y * cpc];
+			_g = mc * g + (1.0f - mc) * where[_y * cpc + 1];
+			_b = mc * b + (1.0f - mc) * where[_y * cpc + 2];
 			
 			if (_r < 0) _r = 0;
 			if (_g < 0) _g = 0;
@@ -274,9 +239,9 @@ void GFX_fill_rect_hex_wa(uint32 x, uint32 y, uint32 w, uint32 h, uint32 colour,
 			if (_g > 255) _g = 255;
 			if (_b > 255) _b = 255;
 			
-			where[_y * cpc] = GFX_filter('r', (uint8) _r);
-			where[_y * cpc + 1] = GFX_filter('g', (uint8) _g);
-			where[_y * cpc + 2] = GFX_filter('b', (uint8) _b);
+			where[_y * cpc] = (uint8) _r;
+			where[_y * cpc + 1] = (uint8) _g;
+			where[_y * cpc + 2] = (uint8) _b;
 			
 		}
 		
@@ -299,9 +264,9 @@ void GFX_wash_hex_wa(uint32 colour, uint8 a) {
 void GFX_wash_rgb(uint8 r, uint8 g, uint8 b) {
 	int p;
 	for (p = 0; p < width * height * 4; p += 4) {
-		video_RAM[p] = GFX_filter('r', r);
-		video_RAM[p + 1] = GFX_filter('g', g);
-		video_RAM[p + 2] = GFX_filter('b', b);
+		video_RAM[p] = r;
+		video_RAM[p + 1] = g;
+		video_RAM[p + 2] = b;
 		
 	}
 	
@@ -311,7 +276,7 @@ uint8* GFX_scale_image(uint8* surf, uint32 w, uint32 factor) {
 	
 }
 
-void GFX_blit_image(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[]) {
+void GFX_blit_image(uint32 x, int y, uint32 w, uint32 h, uint8 image_data[]) {
 	uint8* where = video_RAM;
 	where += mode_pitch * y;
 	
@@ -321,9 +286,12 @@ void GFX_blit_image(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[]) 
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			where[_y * cpc] = GFX_filter('r', image_data[i]);
-			where[_y * cpc + 1] = GFX_filter('g', image_data[i + 1]);
-			where[_y * cpc + 2] = GFX_filter('b', image_data[i + 2]);
+			if (_x >= 0 && _x < height) {
+				where[_y * cpc] = image_data[i];
+				where[_y * cpc + 1] = image_data[i + 1];
+				where[_y * cpc + 2] = image_data[i + 2];
+				
+			}
 			
 			i += 3;
 			
@@ -349,9 +317,9 @@ void GFX_blit_image_part(uint32 x, uint32 y, uint32 part_x, uint32 part_y, uint3
 	for (_y = 0; _y < h; _y++) {
 		for (_x = x; _x < w + x; _x++) {
 			if (_x <= part_w && _x >= part_x) {
-				where[_x * cpc] = GFX_filter('r', image_data[i]);
-				where[_x * cpc + 1] = GFX_filter('g', image_data[i + 1]);
-				where[_x * cpc + 2] = GFX_filter('b', image_data[i + 2]);
+				where[_x * cpc] = image_data[i];
+				where[_x * cpc + 1] = image_data[i + 1];
+				where[_x * cpc + 2] = image_data[i + 2];
 				
 			}
 			
@@ -380,9 +348,9 @@ void GFX_blit_image_wa(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			_r = mc * image_data[i] + (1.0f - mc) * GFX_unfilter('r', where[y * cpc]);
-			_g = mc * image_data[i + 1] + (1.0f - mc) * GFX_unfilter('g', where[y * cpc + 1]);
-			_b = mc * image_data[i + 2] + (1.0f - mc) * GFX_unfilter('b', where[y * cpc + 2]);
+			_r = mc * image_data[i] + (1.0f - mc) * where[y * cpc];
+			_g = mc * image_data[i + 1] + (1.0f - mc) * where[y * cpc + 1];
+			_b = mc * image_data[i + 2] + (1.0f - mc) * where[y * cpc + 2];
 			
 			if (_r < 0) _r = 0;
 			if (_g < 0) _g = 0;
@@ -392,9 +360,9 @@ void GFX_blit_image_wa(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[
 			if (_g > 255) _g = 255;
 			if (_b > 255) _b = 255;
 			
-			where[_y * cpc] = GFX_filter('r', image_data[i]);
-			where[_y * cpc + 1] = GFX_filter('g', image_data[i + 1]);
-			where[_y * cpc + 2] = GFX_filter('b', image_data[i + 2]);
+			where[_y * cpc] = image_data[i];
+			where[_y * cpc + 1] = image_data[i + 1];
+			where[_y * cpc + 2] = image_data[i + 2];
 			
 			i += 3;
 			
@@ -443,9 +411,9 @@ void GFX_blit_32bit_image(uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_da
 				if (_g > 255) _g = 255;
 				if (_b > 255) _b = 255;
 				
-				where[_y * cpc] = GFX_filter('r', (uint8) _r);
-				where[_y * cpc + 1] = GFX_filter('g', (uint8) _g);
-				where[_y * cpc + 2] = GFX_filter('b', (uint8) _b);
+				where[_y * cpc] = (uint8) _r;
+				where[_y * cpc + 1] = (uint8) _g;
+				where[_y * cpc + 2] = (uint8) _b;
 				
 				i += 4;
 				
@@ -492,9 +460,9 @@ void GFX_blit_icon_hex(uint32 x, uint32 y, uint8 w, uint8 h, uint8 icon_data[], 
 			if (_g > 255) _g = 255;
 			if (_b > 255) _b = 255;
 			
-			where[_y * cpc] = GFX_filter('r', (uint8) _r);
-			where[_y * cpc + 1] = GFX_filter('g', (uint8) _g);
-			where[_y * cpc + 2] = GFX_filter('b', (uint8) _b);
+			where[_y * cpc] = (uint8) _r;
+			where[_y * cpc + 1] = (uint8) _g;
+			where[_y * cpc + 2] = (uint8) _b;
 			
 			i++;
 			
@@ -597,9 +565,9 @@ uint8* GFX_compile_section_to_ptr8(uint8* surf, uint32 x, uint32 y, uint32 w, ui
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			surf[i] = GFX_unfilter('r', where[_y * cpc]);
-			surf[i + 1] = GFX_unfilter('g', where[_y * cpc + 1]);
-			surf[i + 2] = GFX_unfilter('b', where[_y * cpc + 2]);
+			surf[i] = where[_y * cpc];
+			surf[i + 1] = where[_y * cpc + 1];
+			surf[i + 2] = where[_y * cpc + 2];
 			
 			i += 3;
 			

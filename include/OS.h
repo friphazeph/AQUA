@@ -17,7 +17,7 @@
 	#include "system/system.h"
 	
 	#include "memory/memory.h"
-	//#include "memory/paging.h"
+	#include "memory/paging.h"
 	
 	#include "graphics/UI.h"
 	#include "graphics/GFX.h"
@@ -35,6 +35,7 @@
 	
 	#include "file_system/AQUA_fs.h"
 	
+	#include "user/sleep.h"
 	#include "user/cursor_task.h"
 	#include "user/widget_page.h"
 	#include "user/app_launcher.h"

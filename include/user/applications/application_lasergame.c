@@ -78,9 +78,7 @@ void launch_application_lasergame(void) {
 	}
 	
 	gl_edit_point(0, gl_pos(0, 0, 0), rand_int(0, 0xFF00FF00));
-	
 	hide_cursor();
-	gl_fov(WIDTH / 4);
 	
 	char letter;
 	char poll;
