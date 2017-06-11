@@ -66,6 +66,7 @@ OBJS = \
 	obj/user/interpreters/basic_interpreter.o \
 	\
 	obj/memory/heap.o \
+	obj/memory/kheap.o \
 	obj/memory/memory.o \
 	obj/memory/paging.o \
 	\

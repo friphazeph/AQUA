@@ -370,7 +370,7 @@ void OS_run(\
 	}
 	
 	println("Memory management: Enabling up paging ...", 0x0f);
-	enable_paging();
+	init_paging();
 	
 	println("\nSerial: Making sure serial port is est to COM1 ...", 0x0f);
 	set_serial_port(COM1);

@@ -24,13 +24,13 @@
 
 #include "heap.h"
 
-uint8 heap_space[MAX_HEAP_SPACE];
-uint8 frames[MAX_FRAMES];
+static uint8 heap_space[MAX_HEAP_SPACE];
+static uint8 frames[MAX_FRAMES];
 
-frame frame_buffer;
-frame_set frame_set_buffer;
+static frame frame_buffer;
+static frame_set frame_set_buffer;
 
-uint32 kfree_buffer;
+static uint32 kfree_buffer;
 
 void init_heap(void) {
 	int f;
@@ -176,5 +176,10 @@ void kfree(void* __ptr, uint32 len) {
 
 void strfree(string str) {
 	kfree(str, str_len(str) + 1);
+	
+}
+
+void get_frames_for_paging(void) {
+	return (uint32*) frames;
 	
 }

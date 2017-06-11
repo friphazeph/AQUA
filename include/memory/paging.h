@@ -31,8 +31,9 @@
 	#include "../types.h"
 	#include "../screen.h"
 	
-	#include "memory.h"
+	#include "kheap.h"
 	#include "../interrupts/isr.h"
+	#include "../interrupts/irq.h"
 	
 	/*extern long kstart;
 	extern long kend;
@@ -51,7 +52,7 @@
 		uint32 dirty : 1;
 		
 		uint32 unused : 7;
-		uint32 frame : 20;
+		uint32 _frame : 20;
 		
 	} page;
 	
@@ -67,10 +68,10 @@
 		
 	} page_directory;
 	
-	void enable_paging(void);
+	void init_paging(void);
 	void switch_page_directory(page_directory* new);
 	
 	page* get_page(uint32 address, int make, page_directory* directory);
-	void page_fault(struct registers regs);
+	void page_fault(struct registers* regs);
 	
 #endif
