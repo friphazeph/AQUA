@@ -286,7 +286,7 @@ void GFX_blit_image(uint32 x, int y, uint32 w, uint32 h, uint8 image_data[]) {
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			if (_x >= 0 && _x < height) {
+			if (_x + y >= 0 && _x + y < height) {
 				where[_y * cpc] = image_data[i];
 				where[_y * cpc + 1] = image_data[i + 1];
 				where[_y * cpc + 2] = image_data[i + 2];
@@ -745,7 +745,7 @@ uint8* GFX_blit_image_to_ptr8_wa(uint8* surf, uint32 sw, uint32 x, uint32 y, uin
 	
 }
 
-uint8* GFX_blit_icon_hex_to_ptr8(uint8* surf, uint32 sw, uint32 x, uint32 y, uint8 w, uint8 h, uint8 icon_data[], uint32 colour) {
+uint8* GFX_blit_icon_hex_to_ptr8(uint8* surf, uint32 sw, uint32 x, int y, uint8 w, uint8 h, uint8 icon_data[], uint32 colour) {
 	uint32 pitch = sw * 3;
 	uint32 add_pitch = pitch * y;
 	
@@ -764,25 +764,28 @@ uint8* GFX_blit_icon_hex_to_ptr8(uint8* surf, uint32 sw, uint32 x, uint32 y, uin
 	int _y;
 	for (_x = 0; _x < h; _x++) {
 		for (_y = x; _y < w + x; _y++) {
-			mc = (float) icon_data[i] / 255.0f;
-			
-			_r = mc * r + (1.0f - mc) * GFX_get_ptr8_pixel_component(surf, sw, _y, _x + y, 'r');
-			_g = mc * g + (1.0f - mc) * GFX_get_ptr8_pixel_component(surf, sw, _y, _x + y, 'g');
-			_b = mc * b + (1.0f - mc) * GFX_get_ptr8_pixel_component(surf, sw, _y, _x + y, 'b');
-			
-			if (_r < 0) _r = 0;
-			if (_g < 0) _g = 0;
-			if (_b < 0) _b = 0;
-			
-			if (_r > 255) _r = 255;
-			if (_g > 255) _g = 255;
-			if (_b > 255) _b = 255;
-			
-			surf[_y * 3 + add_pitch] = (uint8) _r;
-			surf[_y * 3 + 1 + add_pitch] = (uint8) _g;
-			surf[_y * 3 + 2 + add_pitch] = (uint8) _b;
-			
-			i++;
+			if (_x + y > 0) {
+				mc = (float) icon_data[i] / 255.0f;
+				
+				_r = mc * r + (1.0f - mc) * GFX_get_ptr8_pixel_component(surf, sw, _y, _x + y, 'r');
+				_g = mc * g + (1.0f - mc) * GFX_get_ptr8_pixel_component(surf, sw, _y, _x + y, 'g');
+				_b = mc * b + (1.0f - mc) * GFX_get_ptr8_pixel_component(surf, sw, _y, _x + y, 'b');
+				
+				if (_r < 0) _r = 0;
+				if (_g < 0) _g = 0;
+				if (_b < 0) _b = 0;
+				
+				if (_r > 255) _r = 255;
+				if (_g > 255) _g = 255;
+				if (_b > 255) _b = 255;
+				
+				surf[_y * 3 + add_pitch] = (uint8) _r;
+				surf[_y * 3 + 1 + add_pitch] = (uint8) _g;
+				surf[_y * 3 + 2 + add_pitch] = (uint8) _b;
+				
+				i++;
+				
+			}
 			
 		}
 		

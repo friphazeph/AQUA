@@ -49,6 +49,8 @@ void timer_handler(struct registers* r) {
 	clear_untouch();
 	
 	if (my <= 0 && mp == 1) dragging_top = TRUE;
+	if (dragging_top && mp != 1) dragging_top = FALSE;
+	
 	if (dragging_top && my > height / 2 && mr == 1) {
 		enter_sleep_mode();
 		dragging_top = FALSE;

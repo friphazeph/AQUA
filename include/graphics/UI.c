@@ -444,8 +444,8 @@ static uint8* UI_blit_slide_down_to_ptr8(uint8* surf, uint16 _fdl, uint8 _font_d
 	
 	int e;
 	for (e = 0; e < entry_count; e++) {
-		surf = GFX_blit_text_hex_to_ptr8(surf, w, 5, (20 * e), 0, _fdl, _font_data, translate(entries[e].name), entries[e].colour);
-		//surf = GFX_blit_text_hex_to_ptr8(surf, w, 5, (20 * e) + y - h, 0, _fdl, _font_data, entries[e].name, entries[e].colour);
+		surf = GFX_blit_text_hex_to_ptr8(surf, w, 5, (20 * e) + y - h, 0, _fdl, _font_data, translate(entries[e].name), entries[e].colour);
+		//surf = GFX_blit_text_hex_to_ptr8(surf, w, 5, (20 * e), 0, _fdl, _font_data, translate(entries[e].name), entries[e].colour);
 		
 	}
 	

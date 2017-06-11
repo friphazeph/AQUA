@@ -28,6 +28,7 @@ KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22)
 section .data
 	align 0x1000
 	
+	global boot_page_directory
 	boot_page_directory:
 		dd 0x00000083
 		times (KERNEL_PAGE_NUMBER - 1) dd 0
@@ -70,9 +71,9 @@ section .text
 		or ecx, 0x00000010
 		mov cr4, ecx
 		
-		; mov ecx, cr0 ; for some reason, paging crashes the os
-		; or ecx, 0x80000000
-		; mov cr0, ecx
+		;mov ecx, cr0
+		;or ecx, 0x80000000
+		;mov cr0, ecx
 		
 		lea ecx, [start_hh]
 		jmp ecx
@@ -102,20 +103,44 @@ section .text
 		hlt
 		jmp stop
 	
-	global load_page_dir:
+	global load_page_dir
 	load_page_dir:
 		push ebp
-		mov ebp, esp
-		push dword [ebp + 8]
-		pop eax
 		
-		pusha
+		mov ebp, esp
+		mov eax, [esp + 8]
+		
 		mov cr3, eax
+		mov esp, ebp
+		
+		pop ebp
+		ret
+		
+		;push ebp
+		;mov ebp, esp
+		;push dword [ebp + 8]
+		;pop eax
+		
+		;pusha
+		;mov cr3, eax
+		
+		;mov eax, cr0
+		;or eax, 0x80000000
+		;mov cr0, eax
+		;popa
+		
+		;mov esp, ebp
+		;pop ebp
+		;ret
+	
+	global enable_paging
+	enable_paging:
+		push ebp
+		mov ebp, esp
 		
 		mov eax, cr0
 		or eax, 0x80000000
 		mov cr0, eax
-		popa
 		
 		mov esp, ebp
 		pop ebp

@@ -369,8 +369,8 @@ void OS_run(\
 		
 	}
 	
-	println("Memory management: Setting up paging ...", 0x0f);
-	//setup_paging();
+	println("Memory management: Enabling up paging ...", 0x0f);
+	enable_paging();
 	
 	println("\nSerial: Making sure serial port is est to COM1 ...", 0x0f);
 	set_serial_port(COM1);

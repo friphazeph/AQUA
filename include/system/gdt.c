@@ -26,7 +26,7 @@
 static GDT_entry gdt[GDT_ENTRIES];
 GDT_pointer gdt_ptr;
 
-extern void gdt_flush();
+extern void gdt_flush(void);
 
 void gdt_set_gate(uint32 num, uint16 limit, uint32 base, uint8 access, uint8 granularity) {
 	gdt[num].base_low = (base & 0xFFFF);

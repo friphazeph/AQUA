@@ -87,7 +87,7 @@
 	uint8* GFX_blit_image_to_ptr8(uint8* surf, uint32 sw, uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[]);
 	uint8* GFX_blit_image_to_ptr8_wa(uint8* surf, uint32 sw, uint32 x, uint32 y, uint32 w, uint32 h, uint8 image_data[], uint8 alpha);
 	
-	uint8* GFX_blit_icon_hex_to_ptr8(uint8* surf, uint32 sw, uint32 x, uint32 y, uint8 w, uint8 h, uint8 icon_data[], uint32 colour);
+	uint8* GFX_blit_icon_hex_to_ptr8(uint8* surf, uint32 sw, uint32 x, int y, uint8 w, uint8 h, uint8 icon_data[], uint32 colour);
 	uint8* GFX_blit_text_hex_to_ptr8(uint8* surf, uint32 sw, int32 x, int32 y, uint8 s, uint16 l, uint8 font_data[94][l], string text, uint32 colour);
 	
 #endif

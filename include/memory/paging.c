@@ -24,83 +24,38 @@
 
 #include "paging.h"
 
-uint32 page_directory[1024] __attribute__((aligned(4096)));
-uint32 exec_page_table[1024] __attribute__((aligned(4096)));
+static uint32* frames;
+static uint32 frame_count;
 
-#define kernel_start_phys = &kernel_start - HIGHER_HALF
-#define kernel_end_phys = &kernel_end - HIGHER_HALF
+extern uint32 placement_address;
 
-extern uint32 boot_page_directory;
+#define INDEX_FROM_BIT(a) (a / 32)
+#define OFFSET_FROM_BIT(a) (a % 32)
 
-void setup_paging(void) {
-	page_directory[0] = 0x83;
-	
-	uint32 i;
-	for (i = 1; i < (HIGHER_HALF >> 22); i++) {
-		page_directory[i] = 0x0;
-		
-	}
-	
-	page_directory[i] = 0x83;
-	i++;
-	
-	for (i = i; i < 1024; i++) {
-		page_directory[i] = 0;
-		
-	}
-	
-	uint32* d = (uint32*) 0x1000;
-	load_page_dir((uint32*) ((uint32) &page_directory[0] - HIGHER_HALF));
+static void set_frame(uint32 frame_address) {
+	uint32 frame = frame_address / 0x1000;
+	uint32 idx = INDEX_FROM_BIT(frame);
+	uint32 off = OFFSET_FROM_BIT(frame);
+	frames[idx] |= (0x1 << off);
 	
 }
 
-void exec(uint8* program) {
-	exec_page_table[0] = ((uint32) &program[0] - HIGHER_HALF) | 0x3;
-	page_directory[0] = ((uint32) &exec_page_table[0] - HIGHER_HALF) | 0x3;
+void enable_paging(void) {
 	
-	load_page_dir((uint32*) ((uint32) &page_directory[0] - HIGHER_HALF));
-	((void(*)())0)();
-	
-	exec_page_table[0] = 0x83;
-	load_page_dir((uint32*) ((uint32) &page_directory[0] - HIGHER_HALF));
 	
 }
 
-void page_fault_handler(struct registers* r) {
-	asm volatile("cli");
+void switch_page_directory(page_directory* new) {
 	
-	boolean other = FALSE;
-	switch (r->err_code) {
-		case 0:
-		case 1: {
-			println("Kernel reading in nonpaged area.", 0x06);
-			break;
-			
-		} case 2:
-		case 3: {
-			println("Kernel writing in nonpaged area.", 0x06);
-			break;
-			
-		} case 4:
-		case 5: {
-			println("User reading in nonpaged area.", 0x06);
-			break;
-			
-		} case 6:
-		case 7: {
-			println("User writing in nonpaged area.", 0x06);
-			break;
-			
-		} default: {
-			println("Unknown page fault.", 0x06);
-			other = TRUE;
-			break;
-			
-		}
-		
-	}
 	
-	//print_regs(r);
-	while (TRUE);
+}
+
+page* get_page(uint32 address, int make, page_directory* directory) {
+	
+	
+}
+
+void page_fault(struct registers regs) {
+	
 	
 }
