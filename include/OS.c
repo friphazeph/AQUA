@@ -297,8 +297,17 @@ void OS_run(\
 	BPP = mbi->framebuffer_bpp;
 	CPC = BPP / 8;
 	
-	println("Memory management: Enabling up paging ...", 0x0f);
+	println("System: Loading Global Descriptor Table ...", 0x0f);
+	load_gdt();
+	
+	println("Interrupts: Installing ISR ...", 0x0f);
+	isr_install();
+	
+	println("Memory management: Enabling paging ...", 0x0f);
 	init_paging();
+	
+	uint32 *ptr = (uint32*) 0xA0000000;
+    uint32 do_page_fault = *ptr;
 	
 	println("Memory management: Initializing heap ...", 0x0f);
 	init_heap();
@@ -338,14 +347,8 @@ void OS_run(\
 	println((string) itoa(compile_time_string()), 0x0f);
 	rand_seed(compile_time_string());
 	
-	println("System: Loading Global Descriptor Table ...", 0x0f);
-	load_gdt();
-	
 	println("Initializing mouse cursor ...", 0x0f);
 	init_cursor(buffer_blit);
-	
-	println("Interrupts: Installing ISR ...", 0x0f);
-	isr_install();
 	
 	println("Interrupts: Installing PIT handler on IRQ0 ...", 0x0f);
 	

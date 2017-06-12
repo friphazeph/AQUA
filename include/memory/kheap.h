@@ -1,45 +1,36 @@
-// kheap.h -- Interface for kernel heap functions, also provides
-//            a placement malloc() for use before the heap is 
-//            initialised.
-//            Written for JamesM's kernel development tutorials.
+/*
+ * kheap.h
+ * 
+ * Copyright 2017 Obiwac
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ * 
+ */
+
 
 #ifndef KHEAP_H
-#define KHEAP_H
-
-#include "../types.h"
-
-/**
-   Allocate a chunk of memory, sz in size. If align == 1,
-   the chunk must be page-aligned. If phys != 0, the physical
-   location of the allocated chunk will be stored into phys.
-
-   This is the internal version of kmalloc. More user-friendly
-   parameter representations are available in kmalloc, kmalloc_a,
-   kmalloc_ap, kmalloc_p.
-**/
-uint32 page_kmalloc_int(uint32 sz, int align, uint32 *phys);
-
-/**
-   Allocate a chunk of memory, sz in size. The chunk must be
-   page aligned.
-**/
-uint32 page_kmalloc_a(uint32 sz);
-
-/**
-   Allocate a chunk of memory, sz in size. The physical address
-   is returned in phys. Phys MUST be a valid pointer to u32int!
-**/
-uint32 page_kmalloc_p(uint32 sz, uint32 *phys);
-
-/**
-   Allocate a chunk of memory, sz in size. The physical address 
-   is returned in phys. It must be page-aligned.
-**/
-uint32 page_kmalloc_ap(uint32 sz, uint32 *phys);
-
-/**
-   General allocation function.
-**/
-uint32 page_kmalloc(uint32 sz);
-
-#endif // KHEAP_H
+	#define KHEAP_H
+	
+	#include "../types.h"
+	
+	uint32 page_kmalloc_int(uint32 sz, int align, uint32 *phys);
+	uint32 page_kmalloc_a(uint32 sz);
+	uint32 page_kmalloc_p(uint32 sz, uint32 *phys);
+	uint32 page_kmalloc_ap(uint32 sz, uint32 *phys);
+	uint32 page_kmalloc(uint32 sz);
+	
+#endif

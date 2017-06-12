@@ -27,8 +27,8 @@
 static uint32* frames;
 static uint32 frame_count;
 
-static page_directory* kernel_directory;
-static page_directory* current_directory;
+static page_directory* kernel_directory = 0;
+static page_directory* current_directory = 0;
 
 extern uint32 placement_address;
 
