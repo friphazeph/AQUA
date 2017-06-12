@@ -1,2 +1,4 @@
 obj/*
 AQUA Harddrive.vdi
+aqua/aqua.iso
+aqua/boot/kernel.bin
