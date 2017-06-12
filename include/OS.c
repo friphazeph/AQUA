@@ -297,6 +297,9 @@ void OS_run(\
 	BPP = mbi->framebuffer_bpp;
 	CPC = BPP / 8;
 	
+	println("Memory management: Enabling up paging ...", 0x0f);
+	init_paging();
+	
 	println("Memory management: Initializing heap ...", 0x0f);
 	init_heap();
 	
@@ -368,9 +371,6 @@ void OS_run(\
 		__asm__ __volatile__("sti");
 		
 	}
-	
-	println("Memory management: Enabling up paging ...", 0x0f);
-	init_paging();
 	
 	println("\nSerial: Making sure serial port is est to COM1 ...", 0x0f);
 	set_serial_port(COM1);

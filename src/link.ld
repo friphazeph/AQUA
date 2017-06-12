@@ -40,6 +40,7 @@ SECTIONS {
 	}
 	
 	.bss : {*(.bss)}
+	end = .; _end = .; __end = .;
 	/DISCARD/ : {*(.fini_array*) *(.comment)}
 	
 }

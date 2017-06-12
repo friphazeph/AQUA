@@ -27,6 +27,9 @@
 static uint32* frames;
 static uint32 frame_count;
 
+static page_directory* kernel_directory;
+static page_directory* current_directory;
+
 extern uint32 placement_address;
 
 #define INDEX_FROM_BIT(a) (a / 32)
@@ -146,9 +149,9 @@ page* get_page(uint32 address, int make, page_directory* directory) {
 	if (directory->tables[table_idx]) return &directory->tables[table_idx]->pages[address % 1024];
 	if (make) {
 		uint32 temp;
-		directory->tables[table_idx] = (page_table*) page_kmalloc_ap(sizeof(page_table), &temp)
-		memset(dir->tables[table_idx], 0, 0x1000); /// MAX_FRAMES
-		dir->tables_physical[table_idx] = temp | 0x7;
+		directory->tables[table_idx] = (page_table*) page_kmalloc_ap(sizeof(page_table), &temp);
+		memset(directory->tables[table_idx], 0, 0x1000); /// MAX_FRAMES
+		directory->tables_physical[table_idx] = temp | 0x7;
 		
 		return &directory->tables[table_idx]->pages[address % 1024];
 		
@@ -158,15 +161,15 @@ page* get_page(uint32 address, int make, page_directory* directory) {
 	
 }
 
-void page_fault(struct registers* regs) {
+void page_fault(struct registers regs) {
 	uint32 faulting_addresses;
-	asm volatile("mov %%cr2, %0" : "=r" (faulting_address));
+	asm volatile("mov %%cr2, %0" : "=r" (faulting_addresses));
 	
-	int present = !(registers.err_code & 0x1);
-	int rw = registers.err_code & 0x2;
-	int us = registers.err_code & 0x4;
-	int reserved = registers.err_code & 0x8;
-	int id = registers.err_code & 0x10;
+	int present = !(regs.err_code & 0x1);
+	int rw = regs.err_code & 0x2;
+	int us = regs.err_code & 0x4;
+	int reserved = regs.err_code & 0x8;
+	int id = regs.err_code & 0x10;
 	
 	println("A page fault has occured.", 0x06);
 	if (present) println("\tpresent", 0x06);

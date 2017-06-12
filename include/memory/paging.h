@@ -72,6 +72,6 @@
 	void switch_page_directory(page_directory* new);
 	
 	page* get_page(uint32 address, int make, page_directory* directory);
-	void page_fault(struct registers* regs);
+	void page_fault(struct registers regs);
 	
 #endif

@@ -100,7 +100,7 @@ void new_line_check(void) {
 void printch(char c, char colour) {
 	string vidmem = (string) 0xb8000;
 	
-	//write_serial(c);
+	write_serial(c);
 	log[log_length] = c;
 	log_colours[log_length] = colour;
 	log_length++;
