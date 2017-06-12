@@ -24,16 +24,22 @@
 
 #include "paging.h"
 
-static uint32* frames;
-static uint32 frame_count;
+page_directory* kernel_directory = 0;
+page_directory* current_directory = 0;
 
-static page_directory* kernel_directory = 0;
-static page_directory* current_directory = 0;
+uint32* frames;
+uint32 frame_count;
 
 extern uint32 placement_address;
 
-#define INDEX_FROM_BIT(a) (a / 32)
-#define OFFSET_FROM_BIT(a) (a % 32)
+#define INDEX_FROM_BIT(a) (a / (8 * 4))
+#define OFFSET_FROM_BIT(a) (a % (8 * 4))
+
+static void page_memset(uint8 *dest, uint8 val, uint32 len) {
+	uint8 *temp = (uint8*) dest;
+	for ( ; len != 0; len--) *temp++ = val;
+	
+}
 
 static void set_frame(uint32 frame_address) {
 	uint32 _frame = frame_address / 0x1000; /// / MAX_FRAMES
@@ -90,7 +96,7 @@ void alloc_frame(page* _page, boolean is_kernel, boolean is_writeable) {
 		
 	}
 	
-	set_frame(idx * 0x1000); /// / MAX_FRAMES
+	set_frame(idx * 0x1000); /// MAX_FRAMES
 	_page->present = TRUE;
 	_page->rw = (is_writeable) ? TRUE : FALSE;
 	_page->user = (is_kernel) ? FALSE : TRUE;
@@ -112,10 +118,10 @@ void init_paging(void) {
 	
 	frame_count = mem_end_page / 0x1000; /// / MAX_FRAMES
 	frames = (uint32*) page_kmalloc(INDEX_FROM_BIT(frame_count));
-	memset(frames, 0, INDEX_FROM_BIT(frame_count));
+	page_memset(frames, 0, INDEX_FROM_BIT(frame_count));
 	
 	kernel_directory = (page_directory*) page_kmalloc_a(sizeof(page_directory));
-	memset(kernel_directory, 0, sizeof(page_directory));
+	page_memset(kernel_directory, 0, sizeof(page_directory));
 	current_directory = kernel_directory;
 	
 	int i = 0;
@@ -150,7 +156,7 @@ page* get_page(uint32 address, int make, page_directory* directory) {
 	if (make) {
 		uint32 temp;
 		directory->tables[table_idx] = (page_table*) page_kmalloc_ap(sizeof(page_table), &temp);
-		memset(directory->tables[table_idx], 0, 0x1000); /// MAX_FRAMES
+		page_memset(directory->tables[table_idx], 0, 0x1000); /// MAX_FRAMES
 		directory->tables_physical[table_idx] = temp | 0x7;
 		
 		return &directory->tables[table_idx]->pages[address % 1024];
