@@ -52,3 +52,43 @@ void load_gdt(void) {
 	gdt_flush();
 	
 }
+
+void enter_user_space(void) {
+	GDT_entry_bits* code;
+	GDT_entry_bits* data;
+	
+	code = (void*) &gdt[3];
+	data = (void*) &gdt[4];
+	
+	code->limit_low = 0xFFFF;
+	code->base_low = 0;	
+	
+	code->accessed = 0;
+	code->read_write = 1;
+	code->conforming = 0;
+	code->code = 1;
+	code->always_1 = 1;
+	code->DPL = 3;
+	
+	code->present = 1;
+	code->limit_high = 0xF;
+	code->available = 1;
+	code->always_0 = 0;
+	
+	code->big = 1;
+	code->gran = 1;
+	code->base_high = 0;
+	
+	*data = *code;
+	data->code = 0;
+	
+	//install_tss(&gdt[5]);
+	//flush_tss();
+	
+}
+
+void user_function(void) {
+	println("My name is jeff.", 0x0e);
+	while (TRUE);
+	
+}

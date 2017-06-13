@@ -25,6 +25,7 @@
 	#define GDT_H
 	
 	#include "../types.h"
+	//#include "tss.h"
 	
 	#define GDT_ENTRIES 5
 	
@@ -45,15 +46,30 @@
 		
 	} __attribute__((packed)) GDT_pointer;
 	
-	struct GDT_entry_bits {
+	typedef struct GDT_entry_bits {
 		uint32 limit_low : 16;
 		uint32 base_low : 24;
-		uint32 accessed : 1;
-		uint32 
 		
-	};
+		uint32 accessed : 1;
+		uint32 read_write : 1;
+		uint32 conforming_expand_down : 1;
+		uint32 code : 1;
+		uint32 always_1 : 1;
+		uint32 DPL : 2;
+		
+		uint32 limit_high : 4;
+		uint32 available : 1;
+		uint32 always_0 : 1;
+		uint32 big : 1;
+		uint32 gran : 1;
+		uint32 base_high : 8;
+		
+	} GDT_entry_bits __attribute__((packed));
 	
 	void gdt_set_gate(uint32 num, uint16 limit, uint32 base, uint8 access, uint8 granularity);
 	void load_gdt(void);
+	void enter_user_space(void);
+	
+	void user_function(void);
 	
 #endif

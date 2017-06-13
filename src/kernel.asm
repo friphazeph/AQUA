@@ -105,10 +105,10 @@ section .text
 	
 	global load_page_dir
 	load_page_dir:
-		push ebp
+		push dword [ebp + 8]
 		
 		mov ebp, esp
-		mov eax, [esp + 8]
+		mov eax, esp
 		
 		mov cr3, eax
 		mov esp, ebp
@@ -164,6 +164,37 @@ section .text
 	
 	flush2:
 		ret
+	
+	global tss_flush
+	tss_flush:
+		mov ax, 0x2B
+		ltr ax
+		ret
+	
+	global tss_install
+	tss_install:
+		mov ax, 0x28
+		ltr ax
+	
+	extern user_function
+	
+	global jump_usermode
+	jump_usermode:
+		mov ax, 0x23
+		mov ds, ax
+		mov es, ax
+		mov fs, ax
+		mov gs, ax
+		
+		mov eax, esp
+		push 0x23
+		push eax
+		
+		pushf
+		push 0x1B
+		push user_function
+		
+		iret
 	
 	disk_load:
 		push dx

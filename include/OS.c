@@ -137,6 +137,9 @@ static void get_minute_update(uint16 fdl, uint8 font_data[94][fdl]) {
 	
 }
 
+extern void load_page_dir(unsigned int*);
+extern void enable_paging(void);
+
 void OS_run(\
 	unsigned long magic, \
 	unsigned long addr, \
@@ -303,11 +306,10 @@ void OS_run(\
 	println("Interrupts: Installing ISR ...", 0x0f);
 	isr_install();
 	
-	println("Memory management: Enabling paging ...", 0x0f);
-	init_paging();
+	//println("Memory management: Enabling paging ...", 0x0f);
+	//init_paging();
 	
-	uint32 *ptr = (uint32*) 0xA0000000;
-    uint32 do_page_fault = *ptr;
+	enter_user_space();
 	
 	println("Memory management: Initializing heap ...", 0x0f);
 	init_heap();
