@@ -10,5 +10,6 @@
 *.vdi
 *.iso
 
-# temporary folders
+# folders
 final/
+obj/
