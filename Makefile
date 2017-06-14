@@ -34,8 +34,8 @@ EMULATOR = qemu-system-i386
 EMULATOR_FLAGS = -kernel
 
 OBJS = \
-	obj/kernel.o \
 	obj/kernel_asm.o \
+	obj/kernel.o \
 	\
 	obj/dawn/dawn.o \
 	\
@@ -139,14 +139,6 @@ kernel.bin: src/link.ld $(OBJS)
 	ld -melf_i386 -T $< -o $@ $(OBJS)
 
 obj/kernel_asm.o: asm/kernel.asm
-	find ./src/ -type d | sed 's/\.\/src//g' | xargs -I {} mkdir -p obj"/{}"
-	
-	rm -rf final
-	mkdir final
-	
-	rsync -a include/ final
-	rsync -a src/ final
-	
 	$(ASSEMBLER) $(ASMFLAGS) -o obj/kernel_asm.o asm/kernel.asm
 
 obj/%.o: final/%.c
@@ -165,18 +157,29 @@ _install: kernel.bin
 
 _error_target:
 	rm -rf final
-	rm obj/kernel_asm.o
 
 .PHONY: _clean
 _clean:
 	rm -rf obj/*.o
 	rm -rf aqua/
 
+.PHONY: preprare
+prepare:
+	find ./src/ -type d | sed 's/\.\/src//g' | xargs -I {} mkdir -p obj"/{}"
+	
+	rm -rf final
+	mkdir final
+	
+	rsync -a include/ final
+	rsync -a src/ final
+
 .PHONY: iso
 iso:
+	make prepare
 	make _iso || make _error_target
 
 .PHONY: iso
 build:
+	make prepare
 	make _build || make _error_target
 
