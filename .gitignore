@@ -1,4 +1,11 @@
-obj/*
-AQUA Harddrive.vdi
-aqua/aqua.iso
-aqua/boot/kernel.bin
+# dotfiles
+.*
+!.git*
+
+# binaries
+*.o
+*.bin
+
+# other build files
+*.vdi
+*.iso
