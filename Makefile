@@ -135,13 +135,10 @@ kernel.bin: src/link.ld $(OBJS)
 	ld -melf_i386 -T $< -o $@ $(OBJS)
 
 obj/kernel_asm.o: src/kernel.asm
-	find ./include/ -type d | sed 's/\.\/include//g' | xargs -I {} mkdir -p obj"/{}"
+	find ./src/ -type d | sed 's/\.\/src//g' | xargs -I {} mkdir -p obj"/{}"
 	$(ASSEMBLER) $(ASMFLAGS) -o obj/kernel_asm.o src/kernel.asm
 
-obj/kernel_c.o: src/kernel.c
-	$(COMPILER) $(CFLAGS) -o obj/kernel_c.o src/kernel.c
-
-obj/%.o: include/%.c
+obj/%.o: src/%.c
 	mkdir -p $(@D)
 	$(COMPILER) $(CFLAGS) -c -o $@ $<
 
