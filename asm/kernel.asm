@@ -53,7 +53,7 @@ section .text
 	dd 0
 	dd 0
 
-	dd 1;0
+	dd 0;0
 	dd 800;800
 	dd 600;600
 	dd 32;32

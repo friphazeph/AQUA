@@ -641,17 +641,17 @@ void OS_run(\
 	string command;
 	tab_entry_list entries_list[4];
 	
-	entries_list[0].amount = 3;
+	entries_list[0].amount = 2;
 	entries_list[1].amount = 2;
 	entries_list[2].amount = 2;
 	entries_list[3].amount = 2;
 	
-	entries_list[0].entries[0].name = "Utilities";
+	//entries_list[0].entries[0].name = "Utilities";
+	//entries_list[0].entries[0].colour = 0x00FFFFFF;
+	entries_list[0].entries[0].name = "Draw";
 	entries_list[0].entries[0].colour = 0x00FFFFFF;
-	entries_list[0].entries[1].name = "Draw";
+	entries_list[0].entries[1].name = "Settings";
 	entries_list[0].entries[1].colour = 0x00FFFFFF;
-	entries_list[0].entries[2].name = "Settings";
-	entries_list[0].entries[2].colour = 0x00FFFFFF;
 	
 	entries_list[1].entries[0].name = "Random laser game";
 	entries_list[1].entries[0].colour = 0x00FFFFFF;
