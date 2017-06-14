@@ -61,26 +61,26 @@ void enter_user_space(void) {
 	data = (void*) &gdt[4];
 	
 	code->limit_low = 0xFFFF;
-	code->base_low = 0;	
+	code->base_low = FALSE;
 	
-	code->accessed = 0;
-	code->read_write = 1;
-	code->conforming = 0;
-	code->code = 1;
-	code->always_1 = 1;
+	code->accessed = FALSE;
+	code->read_write = TRUE;
+	//code->conforming = FALSE;
+	code->code = TRUE;
+	code->always_1 = TRUE;
 	code->DPL = 3;
 	
-	code->present = 1;
+	//code->present = TRUE;
 	code->limit_high = 0xF;
-	code->available = 1;
-	code->always_0 = 0;
+	code->available = TRUE;
+	code->always_0 = FALSE;
 	
-	code->big = 1;
-	code->gran = 1;
-	code->base_high = 0;
+	code->big = TRUE;
+	code->gran = TRUE;
+	code->base_high = FALSE;
 	
 	*data = *code;
-	data->code = 0;
+	data->code = FALSE;
 	
 	//install_tss(&gdt[5]);
 	//flush_tss();

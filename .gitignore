@@ -9,3 +9,6 @@
 # other build files
 *.vdi
 *.iso
+
+# temporary folders
+final/

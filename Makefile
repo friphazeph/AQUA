@@ -28,7 +28,7 @@ VERSION = "AQUA OS"
 
 CFLAGS = -m32 -c -ffreestanding
 ASMFLAGS = -f elf32
-LDFLAGS = -m elf_i386 -T src/link.ld
+LDFLAGS = -m elf_i386 -T build/link.ld
 
 EMULATOR = qemu-system-i386
 EMULATOR_FLAGS = -kernel
@@ -115,14 +115,17 @@ OBJS = \
 
 OUTPUT = aqua/boot/kernel.bin
 
-run: all
+_run: _all
 	$(EMULATOR) $(EMULATOR_FLAGS) $(OUTPUT)
 
-iso: build
+_iso: _build
 	(killall virtualbox && sleep 1) || true
 	virtualbox --startvm $(VERSION)
+	
+	rm -rf final
+	rm obj/kernel_asm.o
 
-all: $(OBJS)
+_all: $(OBJS)
 	echo "iso" > aqua/aqua.iso
 	rm aqua/aqua.iso
 	
@@ -136,24 +139,44 @@ kernel.bin: src/link.ld $(OBJS)
 	ld -melf_i386 -T $< -o $@ $(OBJS)
 
 obj/kernel_asm.o: asm/kernel.asm
-	find ./include/ -type d | sed 's/\.\/include//g' | xargs -I {} mkdir -p obj"/{}"
+	find ./src/ -type d | sed 's/\.\/src//g' | xargs -I {} mkdir -p obj"/{}"
+	
+	rm -rf final
+	mkdir final
+	
+	rsync -a include/ final
+	rsync -a src/ final
+	
 	$(ASSEMBLER) $(ASMFLAGS) -o obj/kernel_asm.o asm/kernel.asm
 
-obj/%.o: src/%.c
+obj/%.o: final/%.c
 	mkdir -p $(@D)
 	$(COMPILER) $(CFLAGS) -c -o $@ $<
 
-build: all
+_build: _all
 	rm aqua/boot/grub/ -r -f
 	mkdir aqua/boot/grub/
 	
-	cp src/grub.cfg aqua/boot/grub/grub.cfg
+	cp build/grub.cfg aqua/boot/grub/grub.cfg
 	grub-mkrescue --output=aqua/aqua.iso aqua/
 
-install: kernel.bin
+_install: kernel.bin
 	sudo cp $< aqua/boot/kernel.bin
 
-.PHONY: clean
-clean:
+_error_target:
+	rm -rf final
+	rm obj/kernel_asm.o
+
+.PHONY: _clean
+_clean:
 	rm -rf obj/*.o
 	rm -rf aqua/
+
+.PHONY: iso
+iso:
+	make _iso || make _error_target
+
+.PHONY: iso
+build:
+	make _build || make _error_target
+

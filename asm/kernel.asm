@@ -71,11 +71,11 @@ section .text
 		mov ecx, cr4
 		or ecx, 0x00000010
 		mov cr4, ecx
-
+		
 		;mov ecx, cr0
 		;or ecx, 0x80000000
 		;mov cr0, ecx
-
+		
 		lea ecx, [start_hh]
 		jmp ecx
 
